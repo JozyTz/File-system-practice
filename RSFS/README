@@ -1,0 +1,40 @@
+Jonnathon Blanchard
+
+Files changed:
+
+api.c:
+        RSFS_open()     Open a file with a given access flag
+
+        RSFS_write()    Write data from buf to an open file
+
+        RSFS_read()     Read data from an open file to buf
+
+        RSFS_fseek()    Change position of a file based on offset and whence
+
+        RSFS_close()    Close a file with a given file descriptor
+
+        RSFS_delete()   Delete a file with a give file name
+
+        Concurrency/safety checks:
+            Added locks surrounding memcpy calls in RSFS_write and RSFS_read to 
+            prevent data corruption
+            Added locks on open file entries whenever using 
+            and open_file_entry
+            Added check on RSFS_close in casee file is still open.
+            Prevent write access on a file if another user is accessing the file
+                -still allow concurrent read access
+
+*Note:  This was tested using the basic and concurrent tests in application.c and passed.
+        It was also tested on these same tests with varying constant values in def.h, as
+        well as looping over various methods in these tests among other data manipulation.
+
+        This was also tested using other small tests and debug tools.
+        Everything should work, hopefully, although you never know.
+
+*Note2: The concurrency check in RSFS_open doesn't seem to return the same thing as the 
+        sample_output. Instead if a writer tries to access an file already being read
+        or written, it returns an error (-1).
+        So in the concurrency test, the output when a writer fails to open a file is:
+            [writer 0] open file alice with RDWR; return fd=-1.
+            [writer 0] fail to open the file as fd<0.
+        The functionality is accurate. I hope this is satisfactory.
