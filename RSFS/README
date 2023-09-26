@@ -31,10 +31,10 @@ api.c:
         This was also tested using other small tests and debug tools.
         Everything should work, hopefully, although you never know.
 
-*Note2: The concurrency check in RSFS_open doesn't seem to return the same thing as the 
+*Note2: The concurrency check in RSFS_open doesn't seem to return the expected 
         sample_output. Instead if a writer tries to access an file already being read
         or written, it returns an error (-1).
         So in the concurrency test, the output when a writer fails to open a file is:
             [writer 0] open file alice with RDWR; return fd=-1.
             [writer 0] fail to open the file as fd<0.
-        The functionality is accurate. I hope this is satisfactory.
+        The functionality is accurate. I hope this is fine.
